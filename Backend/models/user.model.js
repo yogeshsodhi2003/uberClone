@@ -1,19 +1,14 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const JWT = require("jsonwebtoken");
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import JWT from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema({
-  fullname: {
-    firstname: {
-      type: String,
-      required: true,
-      minlength: [3, "firstname should be at least 3 characters"],
-    },
-    lastname: {
-      type: String,
-      required: true,
-      minlength: [3, "lastname should be at least 3 characters"],
-    },
+  username: {
+    type: String,
+    required: true,
+    minlength: [3, "fullname should be at least 3 characters"],
+    maxlength: [20, "fullname should not exceed 20 characters"],
+
   },
   password: {
     type: String,
@@ -48,4 +43,4 @@ userSchema.statics.hashPassword = async function (password) {
 
 const userModel = mongoose.model("user", userSchema);
 
-module.exports = userModel;
+export default userModel; // Exporting the userModel for use in other files

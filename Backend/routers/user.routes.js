@@ -1,28 +1,15 @@
-const express = require('express');
-const router =  express.Router();
-const {body} = require('express-validator')
-const usercontroller = require('../controllers/user.controller')
-const authMiddleware = require('../middleware/auth.middle')
+import { authUser } from "../middleware/auth.middle.js";
+import { Router } from "express";
+import * as usercontroller from "../controllers/user.controller.js";
 
-router.post('/register' , [
-   
-    body('fullname.firstname').isLength({min:3}).withMessage("write fullname"),
-    body('email').isEmail().withMessage("invalid Email"),
- 
-    body('password').isLength({min:6}).withMessage("write password"),
-],
-usercontroller.registerUser
-)
+const router = Router();
 
+router.post("/register", usercontroller.registerUser);
 
-router.post('/login', 
-    body('email').isEmail().withMessage("Invalid Email"),
-    body('password').isLength({min:6}).withMessage("write password"),
-    usercontroller.loginUser
-)
+router.post("/login", usercontroller.loginUser);
 
-router.get('/profile', authMiddleware.authUser , usercontroller.getUserProfile)
+router.get("/profile", authUser, usercontroller.getUserProfile);
 
-router.post('/logout', authMiddleware.authUser, usercontroller.logoutUser)
+router.post("/logout", authUser, usercontroller.logoutUser);
 
-module.exports = router;
+export default router;

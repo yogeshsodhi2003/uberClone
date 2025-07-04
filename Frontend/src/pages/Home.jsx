@@ -1,8 +1,11 @@
-import React from "react";
+import React,{useContext} from "react";
 import { motion } from "motion/react";
 import { MapPin, Car, PhoneCall } from "lucide-react";
 
+import { UserContext } from "../context/UserContext";
 const Home = () => {
+  const { user } = useContext(UserContext);
+  console.log(user)
   return (
     <main className="min-h-screen  p-6">
       <div className="max-w-6xl mx-auto flex flex-col items-center justify-center text-center py-24">

@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
-
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import JWT from "jsonwebtoken";
 const captainSchema = new mongoose.Schema({
   fullname: {
     firstname: {
@@ -47,7 +48,7 @@ const captainSchema = new mongoose.Schema({
 });
 
 captainSchema.methods.genetrateAuthToken = function () {
-  const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_KEY, {
+  const token = JWT.sign({ _id: this._id.toString() }, process.env.JWT_KEY, {
     expiresIn: "24h",
   });
   return token;
@@ -60,6 +61,8 @@ captainSchema.statics.hashPassword = async function (password) {
   return await bcrypt.hash(password, 10);
 };
 
-const captainModel = mongoose.model({ capatain, captainSchema });
+const captainModel = mongoose.model( "captain", captainSchema );
 
-module.exports = captainModel;
+
+
+export default captainModel;
