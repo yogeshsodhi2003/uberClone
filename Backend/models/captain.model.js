@@ -3,16 +3,9 @@ import bcrypt from "bcrypt";
 import JWT from "jsonwebtoken";
 const captainSchema = new mongoose.Schema({
   fullname: {
-    firstname: {
-      type: String,
-      required: true,
-      minlength: [3, "firstname should be at least 3 characters"],
-    },
-    lastname: {
-      type: String,
-      required: true,
-      minlength: [3, "lastname should be at least 3 characters"],
-    },
+    type: String,
+    required: true,
+    minlength: [3, "fullname should be at least 3 characters"],
   },
   password: {
     type: String,
@@ -24,6 +17,13 @@ const captainSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+    unique: true,
+    minlength: [10, "phone number should be at least 10 characters"],
+    maxlength: [10, "phone number should not exceed 10 characters"],
   },
   WebSocket: {
     type: String,
@@ -47,7 +47,7 @@ const captainSchema = new mongoose.Schema({
   },
 });
 
-captainSchema.methods.genetrateAuthToken = function () {
+captainSchema.methods.generateAuthToken = function () {
   const token = JWT.sign({ _id: this._id.toString() }, process.env.JWT_KEY, {
     expiresIn: "24h",
   });
@@ -55,7 +55,7 @@ captainSchema.methods.genetrateAuthToken = function () {
 };
 
 captainSchema.methods.comparePassword = async function (password) {
-  return await bcrypt.compareSync(password, this.password);
+  return await bcrypt.compare(password, this.password);
 };
 captainSchema.statics.hashPassword = async function (password) {
   return await bcrypt.hash(password, 10);

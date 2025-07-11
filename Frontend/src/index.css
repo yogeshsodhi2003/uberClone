@@ -3,6 +3,20 @@
 @tailwind utilities;
 
 
+.input {
+  width: 100%;
+  padding: 0.75rem; /* Tailwind's p-3 */
+  border-radius: 0.75rem; /* Tailwind's rounded-xl */
+  border: 1px solid #d1d5db; /* Tailwind's border-gray-300 */
+  outline: none;
+  transition: box-shadow 0.2s ease;
+
+}
+
+.input:focus {
+  box-shadow: 0 0 0 2px #facc15; /* Tailwind's ring-yellow-400 */
+}
+
 .map-wrap {
   position: relative;
   width: 100%;

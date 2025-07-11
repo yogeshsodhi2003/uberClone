@@ -11,6 +11,7 @@ const LoginPage = () => {
 
   const navigate = useNavigate()
   const { user, setUser } = useContext(UserContext);
+  const {isAuth, setIsAuth} = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,13 +23,15 @@ const LoginPage = () => {
         password,
       });
       const data = response.data.user;
+      const token = response.data.token;
+      localStorage.setItem("token", token);
       setUser(data);
-      navigate('/')
+      setIsAuth(true);
+      navigate('/ride')
     } catch (error) {
       throw new Error(error);
     }
   };
-
   return (
     <>
     <Navbar/>

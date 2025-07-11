@@ -1,9 +1,14 @@
-import React from "react";
+import React,{useState, useContext} from "react";
 
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 import axios from "axios";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
+  const { isAuth, setIsAuth } = useContext(UserContext);
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -16,7 +21,12 @@ const RegisterPage = () => {
         email: email,
         password: password,
       });
-      console.log(response);
+      const data = response.data.user;
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      setUser(data);
+      setIsAuth(true);
+      navigate("/ride");
     } catch (error) {
       console.log("error in register", error);
     }
@@ -88,7 +98,10 @@ const RegisterPage = () => {
 
         <div className="text-center text-sm text-gray-600 mt-6">
           Already have an account?{" "}
-          <a href="/userlogin" className="text-yellow-500 font-medium hover:underline">
+          <a
+            href="/userlogin"
+            className="text-yellow-500 font-medium hover:underline"
+          >
             Login
           </a>
         </div>

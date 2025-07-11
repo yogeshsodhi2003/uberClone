@@ -1,12 +1,16 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import * as maptilersdk from "@maptiler/sdk";
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 import { GeocodingControl } from "@maptiler/geocoding-control/maptilersdk";
 import "@maptiler/geocoding-control/style.css";
 import { MapPin, Search, CarFront } from "lucide-react";
 import polyline from "@mapbox/polyline";
+import { UserContext } from "../context/UserContext";
 
 const Ride = () => {
+  const user = useContext(UserContext);
+  console.log("loged in user", user);
+
   const mapContainer = useRef(null);
   const map = useRef(null);
   const location = { lng: 75.721123, lat: 29.151861 };
@@ -137,84 +141,87 @@ const Ride = () => {
     <div className="map-wrap">
       <div ref={mapContainer} className="map" />
       <div className="absolute bottom-10 left-10">
-       {!rideBooked && <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          <div>
-            <label className="block mb-1 font-semibold">Pickup Point</label>
-            <div className="relative">
-              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Enter pickup location"
-                value={pickup}
-                onChange={(e) => setPickup(e.target.value)}
-                className="pl-10 p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block mb-1 font-semibold">Drop Point</label>
-            <div className="relative">
-              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Enter drop location"
-                value={drop}
-                onChange={(e) => setDrop(e.target.value)}
-                className="pl-10 p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              />
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            className="bg-yellow-400 text-black font-semibold py-3 rounded-xl hover:bg-yellow-500 transition"
-          >
-            Confirm Locations
-          </button>
-        </form>
-        }
-
-       {rideBooked && <div className="bg-white rounded-2xl shadow-lg p-6 max-w-sm w-full border border-gray-100">
-          <div className="flex items-center gap-4">
-            {/* Car Icon */}
-            <div className="bg-yellow-100 p-3 rounded-full">
-              <CarFront className="w-6 h-6 text-yellow-500" />
-            </div>
-
-            {/* Info */}
+        {!rideBooked && (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div>
-              <p className="text-gray-800 font-semibold text-lg">Uber Go</p>
-              <p className="text-sm text-gray-500">Affordable everyday rides</p>
+              <label className="block mb-1 font-semibold">Pickup Point</label>
+              <div className="relative">
+                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Enter pickup location"
+                  value={pickup}
+                  onChange={(e) => setPickup(e.target.value)}
+                  className="pl-10 p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="mt-4 grid grid-cols-3 text-center text-sm text-gray-700">
             <div>
-              <p className="font-semibold">{Distance} km</p>
-              <p>Distance</p>
+              <label className="block mb-1 font-semibold">Drop Point</label>
+              <div className="relative">
+                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Enter drop location"
+                  value={drop}
+                  onChange={(e) => setDrop(e.target.value)}
+                  className="pl-10 p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                />
+              </div>
             </div>
-            <div>
-              <p className="font-semibold">{Duration} min</p>
-              <p>Duration</p>
-            </div>
-            <div>
-              <p className="font-semibold">₹{price}</p>
-              <p>Price</p>
-            </div>
-          </div>
 
-          <button
-            // onClick={onBook}
-            className="mt-6 bg-yellow-400 hover:bg-yellow-500 transition text-black font-semibold py-3 w-full rounded-xl"
-          >
-            Book Ride
-          </button>
-        </div>
-       }
+            <button
+              type="submit"
+              className="bg-yellow-400 text-black font-semibold py-3 rounded-xl hover:bg-yellow-500 transition"
+            >
+              Confirm Locations
+            </button>
+          </form>
+        )}
+
+        {rideBooked && (
+          <div className="bg-white rounded-2xl shadow-lg p-6 max-w-sm w-full border border-gray-100">
+            <div className="flex items-center gap-4">
+              {/* Car Icon */}
+              <div className="bg-yellow-100 p-3 rounded-full">
+                <CarFront className="w-6 h-6 text-yellow-500" />
+              </div>
+
+              {/* Info */}
+              <div>
+                <p className="text-gray-800 font-semibold text-lg">Uber Go</p>
+                <p className="text-sm text-gray-500">
+                  Affordable everyday rides
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-4 grid grid-cols-3 text-center text-sm text-gray-700">
+              <div>
+                <p className="font-semibold">{Distance} km</p>
+                <p>Distance</p>
+              </div>
+              <div>
+                <p className="font-semibold">{Duration} min</p>
+                <p>Duration</p>
+              </div>
+              <div>
+                <p className="font-semibold">₹{price}</p>
+                <p>Price</p>
+              </div>
+            </div>
+
+            <button
+              // onClick={onBook}
+              className="mt-6 bg-yellow-400 hover:bg-yellow-500 transition text-black font-semibold py-3 w-full rounded-xl"
+            >
+              Book Ride
+            </button>
+          </div>
+        )}
+      </div>
     </div>
-    </div>
-
   );
 };
 

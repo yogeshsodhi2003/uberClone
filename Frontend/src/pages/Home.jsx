@@ -1,11 +1,13 @@
-import React,{useContext} from "react";
+import React, { useContext } from "react";
 import { motion } from "motion/react";
 import { MapPin, Car, PhoneCall } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
 const Home = () => {
   const { user } = useContext(UserContext);
-  console.log(user)
+  const { isAuth } = useContext(UserContext);
+  console.log(user);
   return (
     <main className="min-h-screen  p-6">
       <div className="max-w-6xl mx-auto flex flex-col items-center justify-center text-center py-24">
@@ -24,7 +26,8 @@ const Home = () => {
           transition={{ duration: 1, delay: 0.5 }}
           className="text-lg md:text-2xl  mb-10 max-w-2xl"
         >
-          Your reliable ride is just a tap away. Book your ride, track it live, and reach your destination with comfort and speed.
+          Your reliable ride is just a tap away. Book your ride, track it live,
+          and reach your destination with comfort and speed.
         </motion.p>
 
         <motion.div
@@ -33,31 +36,54 @@ const Home = () => {
           transition={{ duration: 0.6, delay: 1 }}
           className="flex gap-4 flex-wrap justify-center"
         >
-          <button className="bg-yellow-400 text-black text-lg px-6 py-3 rounded-full shadow-xl hover:bg-yellow-500">
+         
+          {isAuth ? (
+            <Link to="/ride">
+            <button className="bg-yellow-400 text-black text-lg px-6 py-3 rounded-full shadow-xl hover:bg-yellow-500">
             Book a Ride
-          </button>
-          <button variant="outline" className=" border-white text-lg px-6 py-3 rounded-full hover:bg-white hover:text-black">
-            Become a Driver
-          </button>
+            </button>
+            </Link>
+          ) : (
+            <Link to="/userlogin">
+            <button className="bg-yellow-400 text-black text-lg px-6 py-3 rounded-full shadow-xl hover:bg-yellow-500">
+            Book a Ride
+            </button>
+            </Link>
+          )}
+           <Link to="/driverregister">
+              <button
+                variant="outline"
+                className="border-white text-lg px-6 py-3 rounded-full hover:bg-white hover:text-black"
+              >
+                Become a Driver
+              </button>
+              </Link>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24">
           <div className="bg-gray-900 p-6 rounded-2xl shadow-lg">
             <MapPin className="w-10 h-10 text-yellow-400 mb-4" />
             <h3 className="text-xl font-semibold mb-2">Live Location</h3>
-            <p className="text-gray-400">Track your ride in real-time and never lose sight of your destination.</p>
+            <p className="text-gray-400">
+              Track your ride in real-time and never lose sight of your
+              destination.
+            </p>
           </div>
 
           <div className="bg-gray-900 p-6 rounded-2xl shadow-lg">
             <Car className="w-10 h-10 text-yellow-400 mb-4" />
             <h3 className="text-xl font-semibold mb-2">Fast Rides</h3>
-            <p className="text-gray-400">We connect you with the nearest drivers to minimize wait time.</p>
+            <p className="text-gray-400">
+              We connect you with the nearest drivers to minimize wait time.
+            </p>
           </div>
 
           <div className="bg-gray-900 p-6 rounded-2xl shadow-lg">
             <PhoneCall className="w-10 h-10 text-yellow-400 mb-4" />
             <h3 className="text-xl font-semibold mb-2">24/7 Support</h3>
-            <p className="text-gray-400">We’ve got your back. Any issue, anytime – we’re here to help.</p>
+            <p className="text-gray-400">
+              We’ve got your back. Any issue, anytime – we’re here to help.
+            </p>
           </div>
         </div>
       </div>
